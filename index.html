@@ -128,7 +128,7 @@
     <a class="line" href="tel:01028344778">전화·카카오톡 <span>010-2834-4778</span></a>
     <a class="line" href="mailto:sms7404@gmail.com">이메일 <span>sms7404@gmail.com</span></a>
     <a class="save" href="sonmunsang.vcf" download>연락처 저장</a>
-    <p class="save-hint">연락처 앱만 열립니다. 저장은 직접 누르세요.</p>
+    <p class="save-hint">다운로드 알림을 눌러 열면 저장됩니다.</p>
     <button class="qr-open" type="button" onclick="showQR(true)">QR 보기</button>
   </section>
 
@@ -166,27 +166,10 @@
     document.getElementById('qr').classList.toggle('on', on);
   }
 
-  // 안드로이드: vcf 다운로드 대신 '새 연락처' 화면을 채워서 연다
-  // 이름·전화·이메일은 페이지에 적힌 값을 그대로 읽는다(값은 한 곳에만)
-  (function () {
-    if (!/Android/i.test(navigator.userAgent)) return;
-    var e = encodeURIComponent;
-    var a = document.querySelector('.save');
-    var name = document.querySelector('h1').textContent.trim();
-    var title = document.querySelector('.title').textContent.trim();
-    var tel = document.querySelector('a[href^="tel:"]').getAttribute('href').slice(4);
-    var mail = document.querySelector('a[href^="mailto:"]').getAttribute('href').slice(7);
-    var vcf = location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '') + 'sonmunsang.vcf';
-    a.removeAttribute('download');
-    a.href = 'intent:#Intent;action=android.intent.action.INSERT;'
-      + 'type=vnd.android.cursor.dir/raw_contact;'
-      + 'S.name=' + e(name) + ';'
-      + 'S.phone=' + e(tel) + ';'
-      + 'S.email=' + e(mail) + ';'
-      + 'S.job_title=' + e(title) + ';'
-      + 'S.browser_fallback_url=' + e(vcf) + ';end';
+  // 안드로이드에서만 저장 안내 문구를 보인다
+  if (/Android/i.test(navigator.userAgent)) {
     document.documentElement.classList.add('is-android');
-  })();
+  }
 </script>
 </body>
 </html>
